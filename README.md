@@ -113,7 +113,7 @@ We provision a MySQL instance with the standard machine tier and configure a dat
 gcloud sql instances create sql-instance --tier=db-n1-standard-2 --region=$my_region
 ```
 
-![Cloud SQL Instance Provisioned](sql-instance-get-started.png)
+![Cloud SQL Instance Provisioned](images/sql-instance-get-started.png)
 *Cloud SQL Instance `sql-instance` successfully provisioned in `us-central1`.*
 
 Once the instance is active:
@@ -144,7 +144,7 @@ SHOW TABLES; -- Empty set (no tables yet)
 EXIT;
 ```
 
-![Database Connection & Creation](connection-to-mysql-db.png)
+![Database Connection & Creation](images/connection-to-mysql-db.png)
 *Connected to the MySQL instance and created the database `wordpress`.*
 
 ---
@@ -178,7 +178,7 @@ kubectl annotate serviceaccount \
   iam.gke.io/gcp-service-account=sql-access@$my_project.iam.gserviceaccount.com
 ```
 
-![Workload Identity Configured](binding-service-account-with-kubernetes-object.png)
+![Workload Identity Configured](images/binding-service-account-with-kubernetes-object.png)
 *Kubernetes Service Account configured and annotated with GSA details.*
 
 ---
@@ -211,7 +211,7 @@ kubectl get deployment wordpress
 kubectl get services
 ```
 
-![WordPress Pod Deployment and Service](side-car-container-configured-created.png)
+![WordPress Pod Deployment and Service](images/side-car-container-configured-created.png)
 *Pod is ready with 2/2 containers running (WordPress + SQL Proxy), and the LoadBalancer IP is provisioned.*
 
 ---
@@ -222,7 +222,7 @@ Access the application by navigating to the LoadBalancer's **External IP** (`htt
 1. Fill out the WordPress installation wizard (Site Title, Admin Username, Password, Email).
 2. Click **Install WordPress**.
 
-![WordPress Wizard Successful Installation](wordpress-logged-in-on-instance.png)
+![WordPress Wizard Successful Installation](images/wordpress-logged-in-on-instance.png)
 *WordPress successfully installed and wizard finished.*
 
 During the installation wizard, WordPress automatically connects to the database via `localhost:3306` (Cloud SQL Proxy) and provisions its database tables. 
@@ -238,7 +238,7 @@ USE wordpress;
 SHOW TABLES;
 ```
 
-![WordPress Database Tables Created](wordpress-creates-databases-entriess.png)
+![WordPress Database Tables Created](images/wordpress-creates-databases-entriess.png)
 *WordPress tables (e.g., `wp_posts`, `wp_users`, `wp_options`) successfully populated by WordPress.*
 
 Finally, read the administrative user entry:
@@ -246,7 +246,7 @@ Finally, read the administrative user entry:
 SELECT * FROM wp_users;
 ```
 
-![WordPress Admin User Verified](wordpress-details-filled-in-as-sql-table.png)
+![WordPress Admin User Verified](images/wordpress-details-filled-in-as-sql-table.png)
 *The WordPress admin account created in the setup wizard is successfully stored in the database.*
 
 ---
