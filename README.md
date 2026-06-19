@@ -12,41 +12,53 @@ The following diagram illustrates the architecture of this deployment, showing h
 
 ```mermaid
 graph TB
-    subgraph GKE_Cluster["Google Kubernetes Engine (GKE) Cluster"]
-        subgraph Namespace_Default["default Namespace"]
-            subgraph WordPress_Pod["WordPress Pod"]
-                KSA["Kubernetes Service Account (KSA)<br><b>gkesqlsa</b>"]
-                
-                Web_Container["WordPress Web Container<br><i>gcr.io/.../wordpress:6.1</i><br>(Port 80)"]
-                Proxy_Container["Cloud SQL Proxy Container<br><i>gcr.io/.../cloud-sql-proxy:2.8.0</i><br>(Port 3306)"]
-                
-                Web_Container -- "Connects via localhost:3306" --> Proxy_Container
-            end
-            
-            K8s_Secret["K8s Secret<br><b>sql-credentials</b><br>(db user & password)"]
-            K8s_Secret -.->|Injected as Env Vars| Web_Container
-            KSA -.->|Provides Identity for| WordPress_Pod
+
+    subgraph GKE["GKE Cluster"]
+        subgraph NS["default Namespace"]
+
+            KSA["Kubernetes Service Account
+gkesqlsa"]
+
+            WP["WordPress Container
+Port 80"]
+
+            PROXY["Cloud SQL Auth Proxy
+Port 3306"]
+
+            SECRET["Kubernetes Secret
+sql-credentials"]
+
+            WP -->|"localhost:3306"| PROXY
+            SECRET -.-> WP
+            KSA -.-> PROXY
+
         end
     end
 
-    subgraph IAM_Control_Plane["Google Cloud IAM"]
-        GSA["Google Service Account (GSA)<br><b>sql-access@PROJECT.iam.gserviceaccount.com</b>"]
-        GSA_Role["Role: <b>Cloud SQL Client</b>"]
-        
-        GSA --> GSA_Role
-        KSA -- "Workload Identity Binding" === GSA
+    subgraph IAM["Google Cloud IAM"]
+
+        GSA["Google Service Account
+sql-access"]
+
+        ROLE["Cloud SQL Client Role"]
+
+        GSA --> ROLE
+        KSA -.->|"Workload Identity"| GSA
+
     end
 
-    subgraph Managed_Cloud_SQL["Google Cloud SQL (External to GKE)"]
-        SQL_Instance["Cloud SQL Instance<br><b>sql-instance</b>"]
-        MySQL_DB["MySQL Database<br><b>wordpress</b>"]
-        
-        SQL_Instance ---> MySQL_DB
+    subgraph CLOUDSQL["Cloud SQL"]
+
+        INSTANCE["MySQL Instance"]
+
+        DB["wordpress Database"]
+
+        INSTANCE --> DB
+
     end
 
-    Proxy_Container -- "Encrypted TLS Tunnel<br>(Authenticated via GSA)" ===> SQL_Instance
+    PROXY -->|"TLS Encrypted Connection"| INSTANCE
 ```
-
 ---
 
 ## 🔑 Core Concepts Explained
