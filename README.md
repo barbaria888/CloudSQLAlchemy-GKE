@@ -15,6 +15,9 @@ Rather than exposing database credentials or using static, long-lived service ac
 
 The following diagram illustrates the architecture of this deployment, showing how the application container (`web`) securely communicates with Cloud SQL through the local `cloudsql-proxy` sidecar, authenticated using GKE Workload Identity.
 
+
+<img src="https://github.com/barbaria888/CloudSQLAlchemy-GKE/blob/0bddcee08a2fc00c4c6b7b70bf9483a38725acb8/images/1_Cloud_SQL_IAM.max-1500x1500.jpg">
+
 ```mermaid
 graph TB
 
