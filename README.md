@@ -1,5 +1,10 @@
 # Connecting WordPress on GKE to Cloud SQL via Workload Identity and SQL Auth Proxy
 
+
+<img src="https://github.com/barbaria888/CloudSQLAlchemy-GKE/blob/ba602bd29f1dd421ffb33c77737c10a196b48bf3/images/Cloud%20SQL%20(1).png" height="70">&nbsp;
+<img src="https://raw.githubusercontent.com/barbaria888/barbaria888/main/gke-icon.png.png" height="70" alt="Google Kubernetes Engine"/>&nbsp;
+<img src="https://github.com/barbaria888/CloudSQLAlchemy-GKE/blob/6703241b8bb65b921800467f801f1df5427bef19/images/Workload%20Identity%20Pool.png" height="70">&nbsp;
+
 This repository documents the implementation of a highly secure, production-grade deployment of WordPress on Google Kubernetes Engine (GKE) Autopilot, integrated with a managed Google Cloud SQL (MySQL) database.
 
 Rather than exposing database credentials or using static, long-lived service account JSON keys (which present a significant security vulnerability), this architecture leverages **GKE Workload Identity** for authorization and the **Cloud SQL Auth Proxy** sidecar container for secure, encrypted connectivity.
